@@ -33,9 +33,9 @@ Vi behöver också skapa en egen ReactHook som hanterar alla cache/localStorage-
 
 - ```getCache()``` används alltid när sidan laddas, om den hittar en giltig cache, uppdatera frontend med typ “Du har en tidigare sökning sparad, vill du fortsätta där du slutade?” och en “Återuppta”-knapp 
 
-- Om dom trycker nej på knappen, kör ```deleteCache()```
+	- Om dom trycker nej på knappen, kör ```deleteCache()```
 
-- Om dom trycker ja, uppdatera alla textfält med t.ex. ```useState``` (inbyggd ReactHook) med datan från “data”-fältet i JSON-payloaden 
+	- Om dom trycker ja, uppdatera alla textfält med t.ex. ```useState``` (inbyggd ReactHook) med datan från “data”-fältet i JSON-payloaden 
 
 - ```saveCache(data)``` används antingen efter varje ny uppdatering eller när man går till nästa steg 
 <br/>
