@@ -1,9 +1,9 @@
 # Cache-implementation 
 
 ### localStorage 
-Inbyggt funktion i browsern som kan spara data lokalt i cache 
+- Inbyggt funktion i browsern som kan spara data lokalt i cache 
+- Behöver en JSON-payload att spara
 
-Behöver en JSON-payload att spara 
 *Exempel:* 
 ```
 { 
