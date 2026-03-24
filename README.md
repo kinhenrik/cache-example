@@ -1,70 +1,49 @@
-# Getting Started with Create React App
+# Cache-implementation 
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### localStorage 
+Inbyggt funktion i browsern som kan spara data lokalt i cache 
 
-## Available Scripts
+Behöver en JSON-payload att spara 
+*Exempel:* 
+```
+{ 
+	“data”: { // här kan man ta in all data som skrivs in i textfälten 
+		“city”: “Stockholm”, 
+		“budget”: 10000, 
+		// allt annat som sparas i cache 
+	}, 
+	“currentStep”: // vilket steg i Wizarden man är på 
+	“expiresAt”: // timer tills cache tas bort (15 min) 
+}
+```
+<br/>
 
-In the project directory, you can run:
+Vi behöver också skapa en egen ReactHook som hanterar alla cache/localStorage-funktioner. 
 
-### `npm start`
+*Exempel på funktioner som vår Hook kan innehålla:*
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- ```saveCache(data)```, sparar payloaden och uppdaterar timestamp på cache 
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- ```getCache()```, getter för cache för att t.ex. kolla när den expirerar 
 
-### `npm test`
+- ```deleteCache()```, tar bort all cache t.ex. när användaren startar en ny sökning eller när getCache ser att tiden på cache har expirerat
+<br/>
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+*Exempel på hur funktionerna kan användas:*
 
-### `npm run build`
+- ```getCache()``` används alltid när sidan laddas, om den hittar en giltig cache, uppdatera frontend med typ “Du har en tidigare sökning sparad, vill du fortsätta där du slutade?” och en “Återuppta”-knapp 
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Om dom trycker nej på knappen, kör ```deleteCache()```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- Om dom trycker ja, uppdatera alla textfält med t.ex. ```useState``` (inbyggd ReactHook) med datan från “data”-fältet i JSON-payloaden 
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- ```saveCache(data)``` används antingen efter varje ny uppdatering eller när man går till nästa steg 
+<br/>
 
-### `npm run eject`
+### Steg att utföra 
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- Bygg vår egna ReactHook och implementera ```saveCache/getCache/deleteCache```. Se till att ```getCache``` automatiskt rensar datan om timern är slut 
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- Gör så att startsidan kan läsa av getCache och skriv ut "Du har en tidigare sökning sparad..." och skapa “Återuppta”-knappen i frontend om en giltig cache hittas. 
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- Gör så att datan i cache kan fyllas i de tomma fälten när man trycker på “Återuppta”-knappen 
